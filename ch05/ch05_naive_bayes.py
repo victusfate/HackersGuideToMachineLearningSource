@@ -1,39 +1,24 @@
-import torch
-import torch.nn as nn
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
 
-# Generate some random data
-X = torch.randn(100, 10)
-y = torch.randint(0, 2, (100,))
+# Load iris dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
 
-# Define naive Bayes model
-class NaiveBayes(nn.Module):
-    def __init__(self):
-        super(NaiveBayes, self).__init__()
-        self.priors = nn.Parameter(torch.randn(2))
-        self.means = nn.Parameter(torch.randn(10, 2))
-        self.vars = nn.Parameter(torch.randn(10, 2))
+# Split dataset into training set and test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
 
-    def forward(self, x):
-        probs = torch.exp(-((x.unsqueeze(1) - self.means) ** 2) / (2 * self.vars + 1e-8))
-        probs = probs.prod(dim=2) * self.priors
-        return probs / probs.sum(dim=1, keepdim=True)
+# Create a Gaussian Classifier
+gnb = GaussianNB()
 
-model = NaiveBayes()
+# Train the model using the training sets
+gnb.fit(X_train, y_train)
 
-# Training loop
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
-for epoch in range(100):
-    optimizer.zero_grad()
-    outputs = model(X)
-    loss = criterion(outputs, y)
-    loss.backward()
-    optimizer.step()
+# Predict the response for test dataset
+y_pred = gnb.predict(X_test)
 
-    # Print epoch and loss
-    print(f"Epoch: {epoch+1}, Loss: {loss.item()}")
-
-# Display predicted class probabilities for the first sample
-sample = X[0]
-predicted_probs = model(sample.unsqueeze(0))
-print("Predicted Class Probabilities:", predicted_probs)
+# Model Accuracy
+print("Accuracy:", accuracy_score(y_test, y_pred))
