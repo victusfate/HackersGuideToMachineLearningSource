@@ -1,8 +1,9 @@
-from transformers import BartForQuestionAnswering, BartTokenizer
+import torch
+from transformers import BertTokenizer, BertForQuestionAnswering
 
-# Initializing a BART base style configuration
-tokenizer = BartTokenizer.from_pretrained('facebook/bart-large')
-model = BartForQuestionAnswering.from_pretrained('facebook/bart-large')
+# Initializing a BERT base style configuration
+tokenizer = BertTokenizer.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
+model = BertForQuestionAnswering.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
 
 # The text that you want to extract the answer from
 context = "The Eiffel Tower is located in Paris."
