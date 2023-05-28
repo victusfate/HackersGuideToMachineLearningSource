@@ -2,7 +2,7 @@
 the source code for a hacker's guide to machine learning
 
 the book is available on kindle https://www.amazon.com/dp/B0C666HXKV and 
-gumroad https://812142374009.gumroad.com/l/xlhtbn
+gumroad https://victusfate.gumroad.com/l/xlhtbn
 
 Table of Contents:
 
